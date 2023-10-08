@@ -23,17 +23,17 @@ namespace Enigma
         SolidColorBrush originalColor = new SolidColorBrush();
         SolidColorBrush labelOutputColor = new SolidColorBrush();
         SolidColorBrush labelOriginalColor = new SolidColorBrush();
-        Label[] keyLabels = new Label[91];
-        Ellipse[] key = new Ellipse[91];
+        Label[] keyLabels = new Label[93];
+        Ellipse[] key = new Ellipse[93];
 
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
-            outputColor.Color = Color.FromRgb(3, 252,240);
-            originalColor.Color = Color.FromRgb(79, 79, 79);
-            labelOutputColor.Color = Color.FromRgb(0, 0, 0);
-            labelOriginalColor.Color = Color.FromRgb(255, 255, 255);
+            outputColor.Color = Color.FromRgb(39, 158, 255); //Color when clicked
+            originalColor.Color = Color.FromRgb(5, 59, 80); //BGcolor of the eclipse
+            labelOutputColor.Color = Color.FromRgb(0, 0, 0); //Color of the label
+            labelOriginalColor.Color = Color.FromRgb(255, 255, 255); //ewan ko
 
             key[0] = eclipse1;
             key[1] = eclipse2;
@@ -126,6 +126,8 @@ namespace Enigma
             key[88] = eclipse89;
             key[89] = eclipse90;
             key[90] = eclipse91;
+            key[91] = eclipse92;
+            key[92] = eclipse93;
 
             keyLabels[0] = lbl1;
             keyLabels[1] = lbl2;
@@ -218,6 +220,8 @@ namespace Enigma
             keyLabels[88] = lbl89;
             keyLabels[89] = lbl90;
             keyLabels[90] = lbl91;
+            keyLabels[91] = lbl92;
+            keyLabels[92] = lbl93;
         }
 
         void updateDisplayCount()
@@ -296,13 +300,13 @@ namespace Enigma
             ofd.Filter = "Comma Separated Values (*.csv;)|*.csv;";
             if (ofd.ShowDialog() == true)
             {
-                tbxRingFilePath.Text = ofd.FileName;
-                if (tbxRingFilePath.Text.Length > 0)
+                FilePathTextBlock.Text = ofd.FileName;
+                if (FilePathTextBlock.Text.Length > 0)
                 {
-                    EnigmaClass.ReadFiles(tbxRingFilePath.Text);
+                    EnigmaClass.ReadFiles(FilePathTextBlock.Text);
                     EnigmaClass.ringContentSeparator();
-                    lblRingCount.Content = "Ring Count : " + EnigmaClass.ringCount();
-                    lblRingContentCount.Content = "Character Count per Ring :  " + EnigmaClass.ringContentCount();
+                    ringC.Text = "Ring Count : " + EnigmaClass.ringCount();
+                    rCount.Text = "Character Count per Ring :  " + EnigmaClass.ringContentCount();
                     MessageBox.Show("Rings File has been Read and Formatted successfully! Please Proceed with the setup.\nFeel free to select another csv file that contains rings if you want.", "Enigma", MessageBoxButton.OK, MessageBoxImage.Information);
                     btnPlusSeconds1.IsEnabled = true;
                     btnPlusMinutes1.IsEnabled = true;
@@ -316,25 +320,32 @@ namespace Enigma
             }
         }
 
-        private void btnRingFileSelector_Click(object sender, RoutedEventArgs e)
+        //private void rSettings_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Settings newWindow = new Settings();
+
+        //    newWindow.Show();
+        //}
+
+        private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Comma Separated Values (*.csv;)|*.csv;";
             if (ofd.ShowDialog() == true)
             {
-                tbxRingFilePath.Text = ofd.FileName;
+                FilePathTextBlock.Text = ofd.FileName;
 
-                if (tbxRingFilePath.Text.Length > 0)
+                if (FilePathTextBlock.Text.Length > 0)
                 {
                     EnigmaClass.ringLines.Clear();
                     Array.Clear(EnigmaClass.groupedRings, 0, EnigmaClass.groupedRings.Length);
                     EnigmaClass.ringSelection = new int[3] { 0, 0, 0 };
                     EnigmaClass.ringSettings = new int[3] { 0, 0, 0 };
                     updateDisplayCount();
-                    EnigmaClass.ReadFiles(tbxRingFilePath.Text);
+                    EnigmaClass.ReadFiles(FilePathTextBlock.Text);
                     EnigmaClass.ringContentSeparator();
-                    lblRingCount.Content = "Ring Count : " + EnigmaClass.ringCount();
-                    lblRingContentCount.Content = "Character Count per Ring : " + EnigmaClass.ringContentCount();
+                    ringC.Text = "Ring Count : " + EnigmaClass.ringCount();
+                    rCount.Text = "Character Count per Ring : " + EnigmaClass.ringContentCount();
                     MessageBox.Show("Rings File has been Read and Formatted successfully! Please Proceed with the setup.\nFeel free to select another csv file that contains rings if you want.", "Enigma", MessageBoxButton.OK, MessageBoxImage.Information);
                     btnPlusSeconds1.IsEnabled = true;
                     btnPlusMinutes1.IsEnabled = true;
@@ -342,7 +353,7 @@ namespace Enigma
                     btnMinusSeconds1.IsEnabled = true;
                     btnMinusMinutes1.IsEnabled = true;
                     btnMinusHours1.IsEnabled = true;
-                    btnRingFileSelector.IsEnabled = true;
+                    MenuOpen.IsEnabled = true;
                     cbxReflector.IsEnabled = true;
                     btnReset.IsEnabled = true;
                 }
@@ -459,7 +470,7 @@ namespace Enigma
                 btnMinusMinutes2.IsEnabled = false;
                 btnMinusHours2.IsEnabled = false;
                 btnSet.IsEnabled = false;
-                btnRingFileSelector.IsEnabled = false;
+                MenuOpen.IsEnabled = false;
                 cbxReflector.IsEnabled = false;
                 tbxInput.Focus();
             }
@@ -1047,7 +1058,7 @@ namespace Enigma
                 btnMinusHours2.IsEnabled = false;
                 btnSet.IsEnabled = false;
                 cbxReflector.IsEnabled = true;
-                btnRingFileSelector.IsEnabled = true;
+                MenuOpen.IsEnabled = true;
                 EnigmaClass.checkboxIsChecked = false;
                 for (int x = 0; x < key.Length; x++)
                 {
