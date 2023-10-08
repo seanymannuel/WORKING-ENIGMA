@@ -18,6 +18,7 @@ namespace Enigma
 {
     public partial class MainWindow : Window
     {
+        private bool isInputEnabled = false;       
         public static bool btnSetIsClicked = false;
         SolidColorBrush outputColor = new SolidColorBrush();
         SolidColorBrush originalColor = new SolidColorBrush();
@@ -25,15 +26,16 @@ namespace Enigma
         SolidColorBrush labelOriginalColor = new SolidColorBrush();
         Label[] keyLabels = new Label[93];
         Ellipse[] key = new Ellipse[93];
+        Label[] keyboard = new Label[52];
+        //string defaultMessage = "Your Message will appear here"; // Default message text
+        //string eMessage = "Encrypted Message will appear here"; // Default message text
 
         public MainWindow()
         {
-            InitializeComponent();            
-
-            outputColor.Color = Color.FromRgb(39, 158, 255); //Color when clicked
-            originalColor.Color = Color.FromRgb(5, 59, 80); //BGcolor of the eclipse
-            labelOutputColor.Color = Color.FromRgb(0, 0, 0); //Color of the label
-            labelOriginalColor.Color = Color.FromRgb(255, 255, 255); //ewan ko
+            InitializeComponent();
+            this.KeyDown += MainWindow_KeyDown;//NOT SURE
+            if (!isInputEnabled)
+                return;
 
             key[0] = eclipse1;
             key[1] = eclipse2;
@@ -129,6 +131,7 @@ namespace Enigma
             key[91] = eclipse92;
             key[92] = eclipse93;
 
+
             keyLabels[0] = lbl1;
             keyLabels[1] = lbl2;
             keyLabels[2] = lbl3;
@@ -222,6 +225,54 @@ namespace Enigma
             keyLabels[90] = lbl91;
             keyLabels[91] = lbl92;
             keyLabels[92] = lbl93;
+            //if (initialState)
+            //    tbxInput.Text = defaultMessage; // If it's the initial state, display the default message
+            //    tbxOutput.Text = eMessage;
+
+            outputColor.Color = Color.FromRgb(39, 158, 255); //Color when clicked
+            originalColor.Color = Color.FromRgb(5, 59, 80); //BGcolor of the eclipse
+            labelOutputColor.Color = Color.FromRgb(0, 0, 0); //Color of the label
+            labelOriginalColor.Color = Color.FromRgb(255, 255, 255); //ewan ko
+
+
+            //NOT SURE
+            keyboard[1] = one;
+            keyboard[2] = two;
+            keyboard[3] = three;
+            keyboard[4] = four;
+            keyboard[5] = five;
+            keyboard[6] = six;
+            keyboard[7] = seven;
+            keyboard[8] = eight;
+            keyboard[9] = nine;
+            keyboard[10] = zero;
+            keyboard[11] = a;
+            keyboard[12] = b;
+            keyboard[13] = cc;
+            keyboard[14] = d;
+            keyboard[15] = ee;
+            keyboard[16] = f;
+            keyboard[17] = g;
+            keyboard[18] = h;
+            keyboard[19] = i;
+            keyboard[20] = j;
+            keyboard[21] = k;
+            keyboard[22] = el;
+            keyboard[23] = m;
+            keyboard[24] = n;
+            keyboard[25] = o;
+            keyboard[26] = p;
+            keyboard[27] = q;
+            keyboard[28] = r;
+            keyboard[29] = s;
+            keyboard[30] = t;
+            keyboard[31] = u;
+            keyboard[32] = v;
+            keyboard[33] = w;
+            keyboard[34] = x;
+            keyboard[35] = y;
+            keyboard[36] = z;
+
         }
 
         void updateDisplayCount()
@@ -259,6 +310,26 @@ namespace Enigma
             }
         }
 
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e) //NOT SURE
+        {
+            // Get the pressed key as a string
+            string pressedKey = e.Key.ToString().ToLower(); // Convert to lowercase for case-insensitive comparison
+
+            // Loop through your keyboard labels and check if any label's content matches the pressed key
+            foreach (Label label in keyboard)
+            {
+                if (label != null && label.Content != null && label.Content.ToString().ToLower() == pressedKey)
+                {
+                    // Change the label's appearance when the key is pressed
+                    label.Foreground = labelOutputColor; // Set the text color
+                    label.Background = outputColor;     // Set the background color
+                }
+            }
+        }
+
+
+
         void keyLightUp()
         {
             for (int x = 0; x < keyLabels.Length; x++)
@@ -293,32 +364,7 @@ namespace Enigma
                 }
             }
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Comma Separated Values (*.csv;)|*.csv;";
-            if (ofd.ShowDialog() == true)
-            {
-                FilePathTextBlock.Text = ofd.FileName;
-                if (FilePathTextBlock.Text.Length > 0)
-                {
-                    EnigmaClass.ReadFiles(FilePathTextBlock.Text);
-                    EnigmaClass.ringContentSeparator();
-                    ringC.Text = "Ring Count : " + EnigmaClass.ringCount();
-                    rCount.Text = "Character Count per Ring :  " + EnigmaClass.ringContentCount();
-                    MessageBox.Show("Rings File has been Read and Formatted successfully! Please Proceed with the setup.\nFeel free to select another csv file that contains rings if you want.", "Enigma", MessageBoxButton.OK, MessageBoxImage.Information);
-                    btnPlusSeconds1.IsEnabled = true;
-                    btnPlusMinutes1.IsEnabled = true;
-                    btnPlusHours1.IsEnabled = true;
-                    btnMinusSeconds1.IsEnabled = true;
-                    btnMinusMinutes1.IsEnabled = true;
-                    btnMinusHours1.IsEnabled = true;
-                    cbxReflector.IsEnabled = true;
-                    btnReset.IsEnabled = true;
-                }
-            }
-        }
+      
 
         //private void rSettings_Click(object sender, RoutedEventArgs e)
         //{
@@ -456,6 +502,8 @@ namespace Enigma
                 MessageBox.Show("Enigma will hide the setup.\nPlease TAKE NOTE of the setup of your Enigma Machine", "Enigma", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EnigmaClass.offsetRotors();
                 MessageBox.Show("Enigma is now activated!", "Enigma", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                isInputEnabled = true;
 
                 btnPlusSeconds1.IsEnabled = false;
                 btnPlusMinutes1.IsEnabled = false;
@@ -622,12 +670,12 @@ namespace Enigma
                         case Key.D1:
                             tbxInput.Text += '!';
                             tbxOutput.Text += EnigmaClass.encrypted('!');
-                            keyLightUp();
+                            keyLightUp();                         
                             break;
                         case Key.D2:
                             tbxInput.Text += '@';
                             tbxOutput.Text += EnigmaClass.encrypted('@');
-                            keyLightUp();
+                            keyLightUp();                          
                             break;
                         case Key.D3:
                             tbxInput.Text += '#';
@@ -964,6 +1012,13 @@ namespace Enigma
                             tbxOutput.Text += EnigmaClass.encrypted('*');
                             keyLightUp();
                             break;
+                        //case Key.OemQuotes:
+                        //    tbxInput.Text += "'";
+                        //    tbxOutput.Text += EnigmaClass.encrypted('"');
+                        //    keyLightUp();
+                        //    break;
+
+                        
                     }
                     //updateDisplayCount();
                 }
@@ -990,6 +1045,12 @@ namespace Enigma
                     case Key.Space:
                         tbxInput.Text += ' ';
                         tbxOutput.Text += EnigmaClass.encrypted(' ');
+                        keyLightUp();
+                        break;
+
+                    case Key.Tab:
+                        tbxInput.Text += "\t";
+                        tbxOutput.Text += EnigmaClass.encrypted('\t');
                         keyLightUp();
                         break;
                     case Key.Back:

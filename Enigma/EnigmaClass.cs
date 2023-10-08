@@ -18,6 +18,7 @@ namespace Enigma
         public static int[] ringSettings = new int[3] { 0, 0, 0 };
         public static bool checkboxIsChecked = false;
 
+
         public static void ReadFiles(string path) //Reads csv file
         {
             try

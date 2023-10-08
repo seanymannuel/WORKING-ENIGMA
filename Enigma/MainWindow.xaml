@@ -8,25 +8,25 @@
          Title="Enigma Machine" Height="900" Width="1290" Background="#64CCC5">
     <Grid>
         <StackPanel Margin="0,0,0,556">
-        <Menu Background="#279EFF">
-            <MenuItem Header="File">
-                <MenuItem 
+            <Menu Background="#279EFF">
+                <MenuItem Header="OpenFile">
+                    <MenuItem 
         x:Name="MenuOpen" 
         Header="Open"
         Click="MenuOpen_Click"/>
-                <Separator/>
-                <MenuItem 
+                    <Separator/>
+                    <MenuItem 
         x:Name="MenuClose"
         Header="Close"/>
-            </MenuItem>
+                </MenuItem>
 
-            <!--<MenuItem Header="Settings">
+                <!--<MenuItem Header="Settings">
                 <MenuItem x:Name="rSettings" Header="Rotor Settings"/>
             </MenuItem>-->
-        </Menu>
-    
-    </StackPanel>
-       
+            </Menu>
+
+        </StackPanel>
+
         <StatusBar Background="#279EFF"
 VerticalAlignment="Bottom">
             <StatusBar VerticalAlignment="Bottom" Background="#279EFF" >
@@ -728,7 +728,6 @@ VerticalContentAlignment="Center"/>
     BorderThickness="1" 
     HorizontalContentAlignment="Center"
     VerticalContentAlignment="Center"/>
-
         <Ellipse x:Name="eclipse1" HorizontalAlignment="Left" Height="45" Margin="72,152,0,0" Stroke="Black" VerticalAlignment="Top" Width="52" Fill="Transparent"/>
         <Ellipse x:Name="eclipse2" Fill="Transparent" HorizontalAlignment="Left" Height="45" Margin="127,152,0,0" Stroke="Black" VerticalAlignment="Top" Width="49"/>
         <Ellipse x:Name="eclipse3" Fill="Transparent" HorizontalAlignment="Left" Height="45" Margin="179,152,0,0" Stroke="Black" VerticalAlignment="Top" Width="49"/>
