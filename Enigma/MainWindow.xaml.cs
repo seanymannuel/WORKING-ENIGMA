@@ -17,8 +17,7 @@ using System.Windows.Shapes;
 namespace Enigma
 {
     public partial class MainWindow : Window
-    {
-        private bool isInputEnabled = false;       
+    {      
         public static bool btnSetIsClicked = false;
         SolidColorBrush outputColor = new SolidColorBrush();
         SolidColorBrush originalColor = new SolidColorBrush();
@@ -26,16 +25,13 @@ namespace Enigma
         SolidColorBrush labelOriginalColor = new SolidColorBrush();
         Label[] keyLabels = new Label[93];
         Ellipse[] key = new Ellipse[93];
-        Label[] keyboard = new Label[52];
+        Label[] keyboard = new Label[54];
         //string defaultMessage = "Your Message will appear here"; // Default message text
         //string eMessage = "Encrypted Message will appear here"; // Default message text
 
         public MainWindow()
         {
             InitializeComponent();
-            this.KeyDown += MainWindow_KeyDown;//NOT SURE
-            if (!isInputEnabled)
-                return;
 
             key[0] = eclipse1;
             key[1] = eclipse2;
@@ -272,6 +268,23 @@ namespace Enigma
             keyboard[34] = x;
             keyboard[35] = y;
             keyboard[36] = z;
+            keyboard[37] = coma;
+            keyboard[38] = dot;
+            keyboard[39] = slash;
+            keyboard[40] = l_bracket;
+            keyboard[41] = r_bracket;
+            keyboard[42] = equal;
+            keyboard[43] = minus;
+            keyboard[44] = b_slash;
+            keyboard[45] = semicolon;
+            keyboard[46] = quotation;
+            keyboard[47] = equal;
+            keyboard[48] = tab;
+            keyboard[49] = _return;
+            keyboard[50] = spacebar;
+            keyboard[51] = back;
+            keyboard[52] = shift;
+            keyboard[53] = shiftlock;
 
         }
 
@@ -311,24 +324,6 @@ namespace Enigma
         }
 
 
-        private void MainWindow_KeyDown(object sender, KeyEventArgs e) //NOT SURE
-        {
-            // Get the pressed key as a string
-            string pressedKey = e.Key.ToString().ToLower(); // Convert to lowercase for case-insensitive comparison
-
-            // Loop through your keyboard labels and check if any label's content matches the pressed key
-            foreach (Label label in keyboard)
-            {
-                if (label != null && label.Content != null && label.Content.ToString().ToLower() == pressedKey)
-                {
-                    // Change the label's appearance when the key is pressed
-                    label.Foreground = labelOutputColor; // Set the text color
-                    label.Background = outputColor;     // Set the background color
-                }
-            }
-        }
-
-
 
         void keyLightUp()
         {
@@ -345,10 +340,10 @@ namespace Enigma
                 {
                     for (int y = 0; y < keyLabels.Length; y++)
                     {
-                        if (y == 62)
+                        if (y == 92)
                         {
-                            key[62].Fill = outputColor;
-                            keyLabels[62].Foreground = labelOutputColor;
+                            key[92].Fill = outputColor;
+                            keyLabels[92].Foreground = labelOutputColor;
                         }
                         else
                         {
@@ -503,8 +498,6 @@ namespace Enigma
                 EnigmaClass.offsetRotors();
                 MessageBox.Show("Enigma is now activated!", "Enigma", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                isInputEnabled = true;
-
                 btnPlusSeconds1.IsEnabled = false;
                 btnPlusMinutes1.IsEnabled = false;
                 btnPlusHours1.IsEnabled = false;
@@ -526,6 +519,94 @@ namespace Enigma
 
         private void tbxInput_KeyDown(object sender, KeyEventArgs e)
         {
+
+            // Reset the color of all labels back to their original color
+            //foreach (Label label in keyboard) PANG RESET NGKULAY PERO DI NAGAN
+            //{
+            //    label.Foreground = labelOriginalColor; // Assuming labelOriginalColor is the original color
+            //    label.Background = originalColor;     // Assuming originalColor is the original color
+            //}
+
+            // Get the pressed key as a string
+            string pressedKey = "";
+
+            // Check if the pressed key is a letter (A-Z)
+            if (e.Key >= Key.A && e.Key <= Key.Z)
+            {
+                pressedKey = e.Key.ToString().ToLower(); // Convert to lowercase for case-insensitive comparison
+            }
+            // Check if the pressed key is a number (0-9)
+            else if (e.Key >= Key.D0 && e.Key <= Key.D9)
+            {
+                pressedKey = e.Key.ToString().Substring(1); // Remove 'D' prefix for numbers
+            }
+            // Check for special symbols (e.g., !, @, #, etc.)
+            else if (e.Key == Key.Oem1) // Example for the semicolon key
+            {
+                pressedKey = ";"; // Set the pressed key to the appropriate symbol
+            }
+            else if (e.Key == Key.Oem2) // Example for the semicolon key
+            {
+                pressedKey = "/"; // Set the pressed key to the appropriate symbol
+            }           
+            else if (e.Key == Key.Oem3) // Example for the semicolon key
+            {
+                pressedKey = "`"; // Set the pressed key to the appropriate symbol
+            }    
+            else if (e.Key == Key.Oem4) // Example for the semicolon key
+            {
+                pressedKey = "["; // Set the pressed key to the appropriate symbol
+            }
+            else if (e.Key == Key.Oem5) // Example for the semicolon key
+            {
+                pressedKey = "\\"; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.Oem6) // Example for the semicolon key
+            {
+                pressedKey = "]"; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.Oem7) // Example for the semicolon key
+            {
+                pressedKey = "'"; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.Oem8) // Example for the semicolon key
+            {
+                pressedKey = ""; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.Oem102) // Example for the semicolon key
+            {
+                pressedKey = "\\"; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.OemComma) // Example for the semicolon key
+            {
+                pressedKey = ","; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.OemMinus) // Example for the semicolon key
+            {
+                pressedKey = "-"; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.OemPeriod) // Example for the semicolon key
+            {
+                pressedKey = "."; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.OemPlus) // Example for the semicolon key
+            {
+                pressedKey = "+"; // Set the pressed key to the appropriate symbol
+            }            
+            else if (e.Key == Key.OemQuotes) // the quotation key
+            {
+                pressedKey = "\""; // Set the pressed key to the appropriate symbol
+            }
+            // Loop through your keyboard labels and check if any label's content matches the pressed key
+            foreach (Label label in keyboard)
+            {
+                if (label != null && label.Content != null && label.Content.ToString().ToLower() == pressedKey)
+                {
+                    // Change the label's appearance when the key is pressed
+                    label.Foreground = labelOutputColor; // Set the text color
+                    label.Background = outputColor;     // Set the background color
+                }
+            }
             if (btnSetIsClicked)
             {
                 if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
@@ -1048,11 +1129,11 @@ namespace Enigma
                         keyLightUp();
                         break;
 
-                    case Key.Tab:
-                        tbxInput.Text += "\t";
-                        tbxOutput.Text += EnigmaClass.encrypted('\t');
-                        keyLightUp();
-                        break;
+                    //case Key.Tab:
+                    //    tbxInput.Text += "\t";
+                    //    tbxOutput.Text += EnigmaClass.encrypted('\t');
+                    //    keyLightUp();
+                    //    break;
                     case Key.Back:
                         if (tbxInput.Text.Length > 0 && tbxOutput.Text.Length > 0)
                         {
